@@ -750,9 +750,15 @@ const RelationModalWithContext = ({
 
   const options = data?.results ?? [];
 
+  /**
+   * Once a relation is selected (or the list of connected relations changes) the text the user
+   * searched for no longer applies, so clear both the input text and the search query. Otherwise
+   * the list keeps showing results for the previous search until the next open.
+   */
   React.useLayoutEffect(() => {
     setTextValue('');
-  }, [fieldValue]);
+    setSearchParams((s) => ({ ...s, _q: '', page: 1 }));
+  }, [fieldValue, setSearchParams]);
 
   const handleSearch = async (search: string) => {
     setSearchParams((s) => ({ ...s, _q: search, page: 1 }));
